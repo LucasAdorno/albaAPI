@@ -1,10 +1,8 @@
-const connection = require('../database/connection');
+const connection = require("../database/connection");
 
 module.exports = {
   async create(request, response) {
-
-    const requests = await connection('data')
-      .select('*')
+    const requests = await connection("data").select("*");
 
     let deputies = [];
     let politicalParties = [];
@@ -13,105 +11,128 @@ module.exports = {
     let totalParties = [];
     let totalCategories = [];
 
+    requests.map((item) => {
+      deputies.push(item.deputy);
+      politicalParties.push(item.deputy.split("(")[1].replace(")", ""));
+      categories.push(item.category.split(";")[0]);
+    });
 
-    requests.map(item => {
-      deputies.push(item.deputy)
-      politicalParties.push(item.deputy.split('(')[1].replace(')', ''))
-      categories.push(item.category.split(';')[0])
-    }
-    )
+    deputies = deputies.filter(
+      (item, index, self) => index === self.indexOf(item)
+    );
+    politicalParties = politicalParties.filter(
+      (item, index, self) => index === self.indexOf(item)
+    );
+    categories = categories.filter(
+      (item, index, self) => index === self.indexOf(item)
+    );
 
-    deputies = deputies.filter((item, index, self) => index === self.indexOf(item))
-    politicalParties = politicalParties.filter((item, index, self) => index === self.indexOf(item))
-    categories = categories.filter((item, index, self) => index === self.indexOf(item))
-
-
-    deputies.map(deputy => {
+    deputies.map((deputy) => {
       let values = [];
       let deputyCategory = [];
       let finalValue = 0;
 
-      requests.map(item => {
+      requests.map((item) => {
         if (item.deputy === deputy) {
-          values.push(item.money)
-          deputyCategory.push(item.category)
+          values.push(item.money);
+          deputyCategory.push(item.category);
         }
-      })
+      });
 
-      values.map(value => {
+      values.map((value) => {
+        value = value.replace("R$ ", "");
+        value = value.replace(".", "");
+        value = value.replace(",", ".");
 
-        value = value.replace('R$ ', '')
-        value = value.replace('.', '')
-        value = value.replace(',', '.')
+        finalValue += Number(value);
+      });
 
-        finalValue += Number(value)
+      let formatedFinalValue = finalValue.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
 
-      })
-
-      let formatedFinalValue = finalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-
-      totalDeputies.push({ name: deputy, values, finalValue, formatedFinalValue, deputyCategory })
+      totalDeputies.push({
+        name: deputy,
+        values,
+        finalValue,
+        formatedFinalValue,
+        deputyCategory,
+      });
 
       totalDeputies = totalDeputies.sort((a, b) => b.finalValue - a.finalValue);
+    });
 
-
-    })
-
-    politicalParties.map(politicalParty => {
+    politicalParties.map((politicalParty) => {
       let values = [];
+      let partDeputies = [];
       let finalValue = 0;
 
-      requests.map(item => {
-        item.deputy.split('(')[1].replace(')', '') === politicalParty ? values.push(item.money) : ''
-      })
+      requests.map((item) => {
+        item.deputy.split("(")[1].replace(")", "") === politicalParty
+          ? values.push(item.money)
+          : "";
+      });
 
-      values.map(value => {
+      totalDeputies.map((item) => {
+        item.name.split("(")[1].replace(")", "") === politicalParty
+          ? partDeputies.push(item)
+          : "";
+      });
 
-        value = value.replace('R$ ', '')
-        value = value.replace('.', '')
-        value = value.replace(',', '.')
+      values.map((value) => {
+        value = value.replace("R$ ", "");
+        value = value.replace(".", "");
+        value = value.replace(",", ".");
 
-        finalValue += Number(value)
-      })
-      let formatedFinalValue = finalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        finalValue += Number(value);
+      });
+      let formatedFinalValue = finalValue.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
 
-      totalParties.push({ name: politicalParty, finalValue, formatedFinalValue })
+      totalParties.push({
+        name: politicalParty,
+        finalValue,
+        formatedFinalValue,
+        partDeputies,
+      });
 
       totalParties = totalParties.sort((a, b) => b.finalValue - a.finalValue);
+    });
 
-    })
-
-    categories.map(category => {
+    categories.map((category) => {
       let values = [];
       let finalValue = 0;
 
-      requests.map(item => {
-        item.category === category ? values.push(item.money) : ''
-      })
+      requests.map((item) => {
+        item.category === category ? values.push(item.money) : "";
+      });
 
-      values.map(value => {
+      values.map((value) => {
+        value = value.replace("R$ ", "");
+        value = value.replace(".", "");
+        value = value.replace(",", ".");
 
-        value = value.replace('R$ ', '')
-        value = value.replace('.', '')
-        value = value.replace(',', '.')
+        finalValue += Number(value);
+      });
 
-        finalValue += Number(value)
+      let formatedFinalValue = finalValue.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
 
-      })
+      totalCategories.push({ name: category, finalValue, formatedFinalValue });
 
-      let formatedFinalValue = finalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-
-      totalCategories.push({ name: category, finalValue, formatedFinalValue })
-
-      totalCategories = totalCategories.sort((a, b) => b.finalValue - a.finalValue);
-
-
-    })
+      totalCategories = totalCategories.sort(
+        (a, b) => b.finalValue - a.finalValue
+      );
+    });
 
     let topFiveDeputies = totalDeputies.slice(0, 5);
     let topFiveParties = totalParties.slice(0, 5);
     let topFiveCategories = totalCategories.slice(0, 5);
-
 
     const data = {
       totalDeputies,
@@ -119,9 +140,9 @@ module.exports = {
       totalCategories,
       topFiveDeputies,
       topFiveParties,
-      topFiveCategories
-    }
+      topFiveCategories,
+    };
 
     return response.json(data);
-  }
-}
+  },
+};
