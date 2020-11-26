@@ -6,27 +6,27 @@ module.exports = {
     const requests = await connection('data')
       .select('*')
 
-    let deputys = [];
+    let deputies = [];
     let politicalParties = [];
     let categories = [];
-    let totalDeputys = [];
+    let totalDeputies = [];
     let totalParties = [];
     let totalCategories = [];
 
 
     requests.map(item => {
-      deputys.push(item.deputy)
+      deputies.push(item.deputy)
       politicalParties.push(item.deputy.split('(')[1].replace(')', ''))
       categories.push(item.category.split(';')[0])
     }
     )
 
-    deputys = deputys.filter((item, index, self) => index === self.indexOf(item))
+    deputies = deputies.filter((item, index, self) => index === self.indexOf(item))
     politicalParties = politicalParties.filter((item, index, self) => index === self.indexOf(item))
     categories = categories.filter((item, index, self) => index === self.indexOf(item))
 
 
-    deputys.map(deputy => {
+    deputies.map(deputy => {
       let values = [];
       let deputyCategory = [];
       let finalValue = 0;
@@ -50,9 +50,9 @@ module.exports = {
 
       let formatedFinalValue = finalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-      totalDeputys.push({ name: deputy, values, finalValue, formatedFinalValue, deputyCategory })
+      totalDeputies.push({ name: deputy, values, finalValue, formatedFinalValue, deputyCategory })
 
-      totalDeputys = totalDeputys.sort((a, b) => b.finalValue - a.finalValue);
+      totalDeputies = totalDeputies.sort((a, b) => b.finalValue - a.finalValue);
 
 
     })
@@ -108,16 +108,16 @@ module.exports = {
 
     })
 
-    let topFiveDeputys = totalDeputys.slice(0, 5);
+    let topFiveDeputies = totalDeputies.slice(0, 5);
     let topFiveParties = totalParties.slice(0, 5);
     let topFiveCategories = totalCategories.slice(0, 5);
 
 
     const data = {
-      totalDeputys,
+      totalDeputies,
       totalParties,
       totalCategories,
-      topFiveDeputys,
+      topFiveDeputies,
       topFiveParties,
       topFiveCategories
     }
