@@ -67,6 +67,7 @@ module.exports = {
       let values = [];
       let partDeputies = [];
       let finalValue = 0;
+      let midValue = 0;
 
       requests.map((item) => {
         item.deputy.split("(")[1].replace(")", "") === politicalParty
@@ -87,7 +88,13 @@ module.exports = {
 
         finalValue += Number(value);
       });
+      midValue = finalValue / partDeputies.length;
       let formatedFinalValue = finalValue.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
+
+      let formatedMidValue = midValue.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
       });
@@ -95,11 +102,13 @@ module.exports = {
       totalParties.push({
         name: politicalParty,
         finalValue,
+        midValue,
         formatedFinalValue,
+        formatedMidValue,
         partDeputies,
       });
 
-      totalParties = totalParties.sort((a, b) => b.finalValue - a.finalValue);
+      totalParties = totalParties.sort((a, b) => b.midValue - a.midValue);
     });
 
     categories.map((category) => {
