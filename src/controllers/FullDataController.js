@@ -2,7 +2,12 @@ const connection = require("../database/connection");
 
 module.exports = {
   async create(request, response) {
-    const requests = await connection("data").select("*");
+    const query = await request.body.query;
+    console.log(query);
+
+    const requests = await connection("data")
+      .select("*")
+      .where("deputy", "like", `%${query}%`);
 
     let parties = [];
 
@@ -56,7 +61,7 @@ module.exports = {
         }
       });
     });
-
+    console.log(tempParty);
     return response.json(tempParty);
   },
 };
