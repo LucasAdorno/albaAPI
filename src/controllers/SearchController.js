@@ -3,7 +3,7 @@ const connection = require("../database/connection");
 module.exports = {
   async create(request, response) {
     const { query } = await request.body;
-    console.log(query);
+    console.log(query, '---------------------');
 
     const requests = await connection("data")
       .select("*")
@@ -16,6 +16,8 @@ module.exports = {
     });
 
     const tempParty = [];
+
+    const allDeputies = [];
 
     parties = parties.filter(
       (item, index, self) => self.indexOf(item) === index
@@ -59,13 +61,11 @@ module.exports = {
         }
       });
 
-      const allDeputies = [];
-
       tempParty.map((item) => {
         item.deputados.map(({ deputado }) => allDeputies.push(deputado));
       });
     });
-    console.log(tempParty);
+    console.log(tempParty, allDeputies);
     return response.json({ parties, allDeputies});
   },
 };
