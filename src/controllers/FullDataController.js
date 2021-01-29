@@ -1,5 +1,12 @@
 const connection = require("../database/connection");
 
+const totalFunction = (item) => {
+  let money = item.money.replace("R$ ", "");
+  money = money.replace(".", "");
+  money = money.replace(",", ".");
+  return Number(money);
+};
+
 module.exports = {
   async create(request, response) {
     const { query, startdate, enddate } = await request.body;
@@ -69,10 +76,14 @@ module.exports = {
               processo: item.numberProcess,
               valor: item.money,
             });
+            tempParty[index].deputados[
+              tempDeputies.indexOf(item.deputy)
+            ].gasto_total += totalFunction(item);
           } else {
             tempDeputies.push(item.deputy);
             tempParty[index].deputados.push({
               deputado: item.deputy,
+              gasto_total: totalFunction(item),
               gastos: [
                 {
                   nota: item.numberNf,
