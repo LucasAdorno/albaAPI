@@ -59,7 +59,7 @@ module.exports = {
     );
 
     parties.map((party, index) => {
-      tempParty.push({ partido: party, deputados: [] });
+      tempParty.push({ partido: party, deputados: [], gasto_total_partido: 0 });
       const tempDeputies = [];
 
       requests.map((item) => {
@@ -79,6 +79,7 @@ module.exports = {
             tempParty[index].deputados[
               tempDeputies.indexOf(item.deputy)
             ].gasto_total += totalFunction(item);
+            tempParty[index].gasto_total_partido += totalFunction(item);
           } else {
             tempDeputies.push(item.deputy);
             tempParty[index].deputados.push({
@@ -96,6 +97,7 @@ module.exports = {
                 },
               ],
             });
+            tempParty[index].gasto_total_partido += totalFunction(item);
           }
         }
       });
