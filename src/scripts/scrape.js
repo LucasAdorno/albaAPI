@@ -53,22 +53,18 @@ const scrape = async (pageId) => {
 
 module.exports = {
   async loop() {
-    // const lastSavedUrl = await connection("lasturl").select("*");
-    // console.log(lasturl);
-    // console.log(lastSavedUrl[0].number);
+    let lastSavedUrl = await connection("lasturl").select("*");
+    lastSavedUrl = lastSavedUrl[0].number;
+    const lastNumberUrl = await lastURL();
 
-    // if (Number(lastSavedUrl[0].number) < Number(lasturl)) {
-    //   console.log("sim");
-    //   await connection("lasturl")
-    //     .where("number", lastSavedUrl[0].number)
-    //     .update({
-    //       lasturl,
-    //     });
-    // } else {
-    //   console.log("senão");
-    // }
-    console.log(await lastURL());
-    
+    if (Number(lastSavedUrl) < Number(lastNumberUrl)) {
+      console.log("sim");
+      await connection("lasturl").where("number", lastSavedUrl).update({
+        lasturl,
+      });
+    } else {
+      console.log("senão");
+    }
 
     // let loop = setInterval(() => {
     //   if (URLNumber != lastURL) {
