@@ -56,6 +56,8 @@ module.exports = {
     let lastSavedUrl = await connection("lasturl").select("*");
     lastSavedUrl = lastSavedUrl[0].number;
     const lastNumberUrl = await lastURL();
+    lastSavedUrl = 57024;
+
 
     if (Number(lastSavedUrl) < Number(lastNumberUrl)) {
       console.log("sim");
@@ -63,7 +65,6 @@ module.exports = {
         lasturl,
       });
 
-      lastSavedUrl = 57024;
       let loop = setInterval(() => {
       if (lastSavedUrl < lastNumberUrl) {
         scrape(lastSavedUrl).then((value) => {
