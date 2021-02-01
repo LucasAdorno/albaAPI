@@ -62,54 +62,59 @@ module.exports = {
       await connection("lasturl").where("number", lastSavedUrl).update({
         lasturl,
       });
-    } else {
-      console.log("senão");
-    }
 
-    // let loop = setInterval(() => {
-    //   if (URLNumber != lastURL) {
-    //     scrape(numberURLs).then((value) => {
-    //       value.forEach(async (item) => {
-    //         let {
-    //           category,
-    //           numberNf,
-    //           cpf_cnpj,
-    //           company,
-    //           money,
-    //           deputy,
-    //           monthYear,
-    //           numberProcess,
-    //         } = item;
+      lastSavedUrl = 57024;
+      let loop = setInterval(() => {
+      if (lastSavedUrl < lastNumberUrl) {
+        scrape(lastSavedUrl).then((value) => {
+          value.forEach(async (item) => {
+            let {
+              category,
+              numberNf,
+              cpf_cnpj,
+              company,
+              money,
+              deputy,
+              monthYear,
+              numberProcess,
+            } = item;
 
-    //         await connection("data")
-    //           .insert({
-    //             category,
-    //             numberNf,
-    //             cpf_cnpj,
-    //             company,
-    //             money,
-    //             deputy,
-    //             monthYear,
-    //             numberProcess,
-    //           })
-    //           .then()
-    //           .catch(() => {
-    //             console.log(error);
-    //           });
-    //       });
-    //     });
-    //   } else {
-    //     console.log(
-    //       "BANANA BANANA BANANA BANANA BANANA BANANA BANANA BANANA CARLOS É VIADO"
-    //     );
-    //     stopTimer();
-    //   }
-    //   numberURLs++;
-    // }, 10000);
+            await connection("data")
+              .insert({
+                category,
+                numberNf,
+                cpf_cnpj,
+                company,
+                money,
+                deputy,
+                monthYear,
+                numberProcess,
+              })
+              .then()
+              .catch(() => {
+                console.log(error);
+              });
+          });
+        });
+        lastSavedUrl++;
+      } else {
+        console.log(
+          "BANANA BANANA BANANA BANANA BANANA BANANA BANANA BANANA CARLOS É VIADO"
+        );
+        stopTimer();
+      }
+      numberURLs++;
+    }, 10000);
 
     function stopTimer() {
       clearInterval(loop);
     }
+
+    } else {
+      console.log("senão");
+    }
+
+    
   },
 };
 
