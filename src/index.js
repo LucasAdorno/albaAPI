@@ -4,10 +4,10 @@ const routes = require("./routes");
 const { eventNames } = require("./database/connection");
 const { loop } = require("./scripts/scrape.js");
 
-setInterval(() => {
-  loop();
-}, 1000);
-
+// setInterval(() => {
+//   loop();
+// }, 1000);
+loop();
 
 const app = express();
 

@@ -22,4 +22,4 @@ async function findlasturl() {
   return lasturl;
 }
 
-export default findlasturl;
+module.exports = findlasturl;

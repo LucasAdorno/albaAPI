@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const connection = require("../database/connection.js");
 const { findlasturl } = require("./lasturl.js");
-const lastURL = require("./lasturl");
+const lastURL = require("./lasturl.js");
 
 const scrape = async (pageId) => {
   const browser = await puppeteer.launch({
@@ -67,7 +67,8 @@ module.exports = {
     // } else {
     //   console.log("senão");
     // }
-    console.log(lastURL());
+    console.log(await lastURL());
+    
 
     // let loop = setInterval(() => {
     //   if (URLNumber != lastURL) {
