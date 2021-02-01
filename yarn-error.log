@@ -1,0 +1,47 @@
+Arguments: 
+  /usr/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /home/igor/.local/bin:/home/igor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  12.20.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: ENOTEMPTY: directory not empty, rmdir '/media/igor/Storage 2/Linux Storage/Coding/myworkspace/albaAPI/node_modules/sqlite3/lib/binding/napi-v3-linux-x64'
+
+npm manifest: 
+  {
+    "name": "cdftest",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "nodemon src/index.js",
+      "crawler": "node src/scripts/scrapeSsp.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.17.1",
+      "global": "^4.4.0",
+      "knex": "^0.21.5",
+      "nodemon": "^2.0.4",
+      "sqlite3": "^5.0.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

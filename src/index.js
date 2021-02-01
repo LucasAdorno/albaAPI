@@ -2,6 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const routes = require("./routes");
 const { eventNames } = require("./database/connection");
+const { loop } = require("./scripts/scrape.js");
+
+setInterval(() => {
+  loop();
+}, 1000);
+
 
 const app = express();
 
