@@ -61,9 +61,9 @@ module.exports = {
 
     if (Number(lastSavedUrl) < Number(lastNumberUrl)) {
       console.log("sim");
-      await connection("lasturl").where("number", lastSavedUrl).update({
-        lasturl,
-      });
+      // await connection("lasturl").where("number", lastSavedUrl).update({
+      //   lasturl,
+      // });
 
       let loop = setInterval(() => {
       if (lastSavedUrl < lastNumberUrl) {
