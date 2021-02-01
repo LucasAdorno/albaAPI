@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer");
 const connection = require("../database/connection.js");
 const { findlasturl } = require("./lasturl.js");
+const lastURL = require("./lasturl");
 
 const scrape = async (pageId) => {
   const browser = await puppeteer.launch({
@@ -52,61 +53,62 @@ const scrape = async (pageId) => {
 
 module.exports = {
   async loop() {
+    // const lastSavedUrl = await connection("lasturl").select("*");
+    // console.log(lasturl);
+    // console.log(lastSavedUrl[0].number);
 
-  const browser = await puppeteer.launch({
-      // headless: false
-    });
+    // if (Number(lastSavedUrl[0].number) < Number(lasturl)) {
+    //   console.log("sim");
+    //   await connection("lasturl")
+    //     .where("number", lastSavedUrl[0].number)
+    //     .update({
+    //       lasturl,
+    //     });
+    // } else {
+    //   console.log("senão");
+    // }
+    console.log(lastURL());
 
-    const page = await browser.newPage();
+    // let loop = setInterval(() => {
+    //   if (URLNumber != lastURL) {
+    //     scrape(numberURLs).then((value) => {
+    //       value.forEach(async (item) => {
+    //         let {
+    //           category,
+    //           numberNf,
+    //           cpf_cnpj,
+    //           company,
+    //           money,
+    //           deputy,
+    //           monthYear,
+    //           numberProcess,
+    //         } = item;
 
-    await page.goto(
-      `http://www.al.ba.gov.br/transparencia/prestacao-contas/`
-    );
-
-    await page.waitFor("tbody > tr > td", {
-      timeout: 3000,
-    });
-
-    await page.click('.table-itens cinza > td > a');
-    browser.close();
-
-
-    
-      let loop = setInterval(() => {
-        if (URLNumber != lastURL ) {
-          scrape(numberURLs).then((value) => {
-            value.forEach(async (item) => {
-              let {
-                category,
-                numberNf,
-                cpf_cnpj,
-                company,
-                money,
-                deputy,
-                monthYear,
-                numberProcess,
-              } = item;
-  
-              await connection("data").insert({
-                category,
-                numberNf,
-                cpf_cnpj,
-                company,
-                money,
-                deputy,
-                monthYear,
-                numberProcess,
-              }).then().catch(() => { console.log(error) });
-            });
-          });
-        } else {
-          console.log(
-            "BANANA BANANA BANANA BANANA BANANA BANANA BANANA BANANA CARLOS É VIADO"
-          );
-          stopTimer();
-        }
-        numberURLs++;
-      }, 10000);
+    //         await connection("data")
+    //           .insert({
+    //             category,
+    //             numberNf,
+    //             cpf_cnpj,
+    //             company,
+    //             money,
+    //             deputy,
+    //             monthYear,
+    //             numberProcess,
+    //           })
+    //           .then()
+    //           .catch(() => {
+    //             console.log(error);
+    //           });
+    //       });
+    //     });
+    //   } else {
+    //     console.log(
+    //       "BANANA BANANA BANANA BANANA BANANA BANANA BANANA BANANA CARLOS É VIADO"
+    //     );
+    //     stopTimer();
+    //   }
+    //   numberURLs++;
+    // }, 10000);
 
     function stopTimer() {
       clearInterval(loop);
@@ -115,7 +117,6 @@ module.exports = {
 };
 
 return 0;
-
 
 // if (Number(lastSavedUrl[0].number) < Number(lasturl) ) {
 //   console.log('sim')
