@@ -53,8 +53,9 @@ const scrape = async (pageId) => {
 
 module.exports = {
   async loop() {
-    let lastSavedUrl = await connection("lasturl").select("*");
-    lastSavedUrl = lastSavedUrl[0].number;
+    // let lastSavedUrl = await connection("lasturl").select("*");
+    // lastSavedUrl = lastSavedUrl[0].number;
+    let lastSavedUrl;
     const lastNumberUrl = await lastURL();
     lastSavedUrl = 57024;
 
