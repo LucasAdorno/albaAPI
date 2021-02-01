@@ -57,7 +57,7 @@ module.exports = {
     // lastSavedUrl = lastSavedUrl[0].number;
     let lastSavedUrl;
     const lastNumberUrl = await lastURL();
-    lastSavedUrl = 32028;
+    lastSavedUrl = 19544;
 
 
     if (Number(lastSavedUrl) < Number(lastNumberUrl)) {
@@ -67,7 +67,7 @@ module.exports = {
       // });
 
       let loop = setInterval(() => {
-      if (lastSavedUrl < 32031) {
+      if (lastSavedUrl < lastNumberUrl) {
         scrape(lastSavedUrl).then((value) => {
           value.forEach(async (item) => {
             let {
