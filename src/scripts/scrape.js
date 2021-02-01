@@ -98,14 +98,13 @@ module.exports = {
               });
           });
         });
-        lastSavedUrl++;
       } else {
         console.log(
           "BANANA BANANA BANANA BANANA BANANA BANANA BANANA BANANA CARLOS É VIADO"
         );
         stopTimer();
       }
-      numberURLs++;
+        lastSavedUrl++;
     }, 10000);
 
     function stopTimer() {
